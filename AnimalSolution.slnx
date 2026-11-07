@@ -1,6 +1,5 @@
 <Solution>
   <Project Path="AnimalApi/AnimalApi.csproj" Id="552777d9-0d5c-4ec4-8936-7a373960b4da" />
-  <Project Path="AnimalApp/AnimalApp.csproj" />
   <Project Path="AnimalModelsLibrary/AnimalModels.csproj" Id="c04d8195-d6b8-4ef7-b0ef-c77d7b926c9d" />
   <Project Path="AnimalServicesLibrary/AnimalServices.csproj" Id="03824be3-5265-4ac0-9ee5-f21b8d745a4d" />
   <Project Path="RequestDTOs/RequestDTOs.csproj" Id="7e527902-f12e-4407-8bd0-05d71b97af36" />

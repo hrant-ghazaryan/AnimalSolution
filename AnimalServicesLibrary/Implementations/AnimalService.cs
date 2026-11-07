@@ -1,7 +1,5 @@
-﻿using AnimalServicesLibrary.Intefaces;
+﻿namespace AnimalServicesLibrary.Implementations;
 
-namespace AnimalServicesLibrary.Implementations;
-
-class AnimalService : IAnimalService
+class AnimalService 
 {
 }

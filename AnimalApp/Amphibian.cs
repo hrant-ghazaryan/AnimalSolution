@@ -1,6 +1,6 @@
 ﻿namespace AnimalApp;
 
-internal class Amphibian : Animal
+class Amphibian : Animal
 {
 
 }

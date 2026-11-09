@@ -1,10 +1,12 @@
-﻿namespace AnimalServicesLibrary.Intefaces;
+﻿using AnimalModels.Entitites;
 
-interface IAnimalService<T1,T2>
+namespace AnimalServicesLibrary.Intefaces;
+
+interface IAnimalService
 {
-    public void Add(T1 animal);
+    public void Add(Animal animal);
     public void Remove(int id);
-    public void Update(int id, T1 animal);
-    public T2 Get(int id);
-    public IEnumerable<T2> GetAll();
+    public void Update(int id, Animal animal);
+    public Animal Get(int id);
+    public IEnumerable<Animal> GetAll();
 }

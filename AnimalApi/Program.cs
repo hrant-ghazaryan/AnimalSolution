@@ -1,12 +1,16 @@
+using AnimalApi;
 using AnimalModels.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Http;
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine(
-    $"Current Environment: {builder.Environment.EnvironmentName}");
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -16,12 +20,21 @@ var connectionString = builder.Configuration.
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+var translationApiBaseUrl = builder.Configuration["TranslationApi:BaseUrl"]
+    ?? throw new InvalidOperationException("TranslationApi BaseUrl is not configured.");
+
+builder.Services.AddHttpClient<ITranslationApiClient, TranslationApiClient>(httpClient =>
+{
+    httpClient.BaseAddress = new Uri(translationApiBaseUrl);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
-    <Content Remove="Controllers\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <None Remove="Controllers\**" />
+    <Compile Remove="Controlers\**" />
+    <Content Remove="Controlers\**" />
+    <EmbeddedResource Remove="Controlers\**" />
+    <None Remove="Controlers\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,11 +19,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AnimalServicesLibrary\AnimalServices.csproj" />
     <ProjectReference Include="..\RequestDTOs\RequestDTOs.csproj" />
+    <ProjectReference Include="..\TranslationDTOs\TranslationDTOs.csproj" />
   </ItemGroup>
 
 </Project>

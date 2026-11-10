@@ -1,6 +1,15 @@
 <Solution>
   <Project Path="AnimalApi/AnimalApi.csproj" Id="552777d9-0d5c-4ec4-8936-7a373960b4da" />
+  <Project Path="AnimalExceptions/AnimalExceptions.csproj" Id="126279db-2279-449c-ad26-6e2b0eaf4917" />
   <Project Path="AnimalModelsLibrary/AnimalModels.csproj" Id="c04d8195-d6b8-4ef7-b0ef-c77d7b926c9d" />
   <Project Path="AnimalServicesLibrary/AnimalServices.csproj" Id="03824be3-5265-4ac0-9ee5-f21b8d745a4d" />
+  <Project Path="AuthApi/AuthApi.csproj" Id="8c3da9b6-bf91-4d93-8119-8b95aad50193" />
+  <Project Path="AuthDTOs/AuthDTOs.csproj" Id="e9720b8f-743d-40d9-aaaf-00c64347f1d0" />
+  <Project Path="AuthModels/AuthModels.csproj" Id="f3f62501-bf66-459c-a7d4-c5964c4416f6" />
+  <Project Path="AuthServices/AuthServices.csproj" Id="7e2ef0ff-e1e6-43da-a3e8-af41cbfdd037" />
   <Project Path="RequestDTOs/RequestDTOs.csproj" Id="7e527902-f12e-4407-8bd0-05d71b97af36" />
+  <Project Path="TranslationApi/TranslationApi.csproj" Id="8c43df50-9490-4fba-8ee7-96ff6ed5c925" />
+  <Project Path="TranslationDTOs/TranslationDTOs.csproj" Id="c42bff3f-9508-4e7e-9087-71f6deeeb995" />
+  <Project Path="TranslationModels/TranslationModels.csproj" Id="ce16b3b9-f0be-484b-90fc-f5dbd120ba86" />
+  <Project Path="TranslationServices/TranslationServices.csproj" Id="e89a83a8-ea3f-440b-b099-940ccf7bcff4" />
 </Solution>

@@ -1,12 +1,12 @@
-﻿using AnimalModels.Entitites;
+﻿using RequestDTOs;
 
 namespace AnimalServicesLibrary.Intefaces;
 
-interface IAnimalService
+public interface IAnimalService
 {
-    public void Add(Animal animal);
+    public void Add(AnimalDTO animal);
     public void Remove(int id);
-    public void Update(int id, Animal animal);
-    public Animal Get(int id);
-    public IEnumerable<Animal> GetAll();
+    public void Update(int id, AnimalDTO animal);
+    public Task<AnimalDTO> Get(int id);
+    public IEnumerable<AnimalDTO> GetAll();
 }

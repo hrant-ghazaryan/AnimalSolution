@@ -1,5 +1,4 @@
-﻿
-namespace TranslationDTOs;
+﻿namespace TranslationDTOs;
 
 public class TranslationResponseDTO
 {

@@ -1,5 +1,6 @@
 ﻿using AnimalServicesLibrary.Intefaces;
 using Microsoft.AspNetCore.Mvc;
+using RequestDTOs;
 
 namespace AnimalApi.Controllers;
 
@@ -11,5 +12,10 @@ public class AnimalsController : ControllerBase
     public AnimalsController(IAnimalService animalService)
         => this.animalService = animalService;
 
-
+    [HttpPost]
+    public IActionResult Add(AnimalDTO dto)
+    {
+        animalService.Add(dto);
+        return Ok();
+    }
 }

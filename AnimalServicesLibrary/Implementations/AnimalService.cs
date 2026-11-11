@@ -23,6 +23,16 @@ class AnimalService : IAnimalService
         await context.SaveChangesAsync();
     }
 
+    public async void Close(int id)
+    {
+        var animal = await context.Animals.SingleOrDefaultAsync(a => a.Id == id);
+        if (animal is null)
+            throw new ArgumentNullException();
+
+        animal.ClosedDate = DateTime.UtcNow;
+        await context.SaveChangesAsync();
+    }
+
     public async Task<AnimalDTO> Get(int id)
     {
         var animal = await context.Animals.FirstOrDefaultAsync(x => x.Id == id);
@@ -34,7 +44,19 @@ class AnimalService : IAnimalService
     }
 
     public IEnumerable<AnimalDTO> GetAll()
-        => AnimalMapper.MapToDTOs(context.Animals);
+        => AnimalMapper.MapToDTOs(context.Animals.AsNoTracking());
+
+    public IEnumerable<AnimalDTO> GetAnimalByPageAndCount(int page, int count)
+    {
+        var animals = context.Animals.
+            Skip(page * 10).
+            Take(count);
+
+        if (animals.Count() is 0)
+            return [];
+
+        return AnimalMapper.MapToDTOs(animals);
+    }
 
     public async void Remove(int id)
     {
@@ -44,6 +66,17 @@ class AnimalService : IAnimalService
 
         context.Animals.Remove(animal);
         await context.SaveChangesAsync();
+    }
+
+    public IEnumerable<AnimalDTO> SearchBy(string word)
+    {
+        if (string.IsNullOrEmpty(word))
+            return [];
+        
+        var animals = context.Animals.
+            Where(a => a.Name != null && a.Name.Contains(word));
+
+        return AnimalMapper.MapToDTOs(animals);
     }
 
     public async void Update(int id, AnimalDTO animal)

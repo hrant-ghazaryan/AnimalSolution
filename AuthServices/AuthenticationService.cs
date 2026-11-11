@@ -1,5 +1,5 @@
 ﻿namespace AuthServices;
 
-public class AuthenticationService
+public class AuthenticationService 
 {
 }

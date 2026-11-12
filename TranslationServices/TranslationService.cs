@@ -8,75 +8,78 @@ namespace TranslationServices;
 public class TranslationService : ITranslationService
 {
     private readonly TranslationDbContext context;
+
     public TranslationService(TranslationDbContext context)
         => this.context = context;
-    public async Task AddTranslationAsync(TranslationCreateDTO dto)
+
+    public async Task<TranslationGroupResponseDTO?> GetResourceTranslationsAsync(
+        string resourceType,
+        string languageCode,
+        CancellationToken cancellationToken = default)
     {
-        if (dto is null || 
-            string.IsNullOrEmpty(dto.OriginalWord) ||
-            string.IsNullOrEmpty(dto.TranslatedWord) ||
-            string.IsNullOrEmpty(dto.SourceLanguageCode) ||
-            string.IsNullOrEmpty(dto.TargetLanguageCode))
-            throw new InvalidDataException("Invalid Data");
+        var normalizedResourceType = resourceType.Trim();
+        var normalizedLanguageCode = languageCode.Trim().ToLowerInvariant();
 
-        var sourceLanguage = await context.Languages.
-            SingleOrDefaultAsync(l => l.Name == dto.SourceLanguageCode);
+        var values = await context.Translations
+            .AsNoTracking()
+            .Where(translation =>
+                translation.ResourceType == normalizedResourceType &&
+                translation.LanguageCode == normalizedLanguageCode)
+            .ToDictionaryAsync(
+                translation => translation.ResourceCode,
+                translation => translation.Value,
+                cancellationToken);
 
-        var targetLanguage = await context.Languages.
-            SingleOrDefaultAsync(l => l.Name == dto.TargetLanguageCode);
+        return new TranslationGroupResponseDTO
+        {
+            ResourceType = normalizedResourceType,
+            LanguageCode = normalizedLanguageCode,
+            Values = values
+        };
+    }
 
-        if (sourceLanguage is null || targetLanguage is null)
-            return;
+    public async Task AddTranslationAsync(
+        TranslationCreateDTO dto,
+        CancellationToken cancellationToken = default)
+    {
+        var resourceType = dto.ResourceType.Trim();
+        var resourceCode = dto.ResourceCode.Trim();
+        var languageCode = dto.LanguageCode.Trim().ToLowerInvariant();
+        var value = dto.Value.Trim();
 
-        var alreadyExists = await context.Translations
-            .AnyAsync(t =>
-                t.Word == dto.OriginalWord &&
-                t.TargetLanguageId == targetLanguage.Id);
+        var alreadyExists = await context.Translations.AnyAsync(
+            translation =>
+                translation.ResourceType == resourceType &&
+                translation.ResourceCode == resourceCode &&
+                translation.LanguageCode == languageCode,
+            cancellationToken);
 
         if (alreadyExists)
             return;
 
         var translation = new Translation
         {
-            Word = dto.OriginalWord,
-            TranslatedWord = dto.TranslatedWord,
-            SourceLanguageId = sourceLanguage.Id,
-            TargetLanguageId = targetLanguage.Id
+            ResourceType = resourceType,
+            ResourceCode = resourceCode,
+            LanguageCode = languageCode,
+            Value = value
         };
 
-        await context.Translations.AddAsync(translation);
-        await context.SaveChangesAsync();
+        await context.Translations.AddAsync(translation, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteTranslationAsync(int id)
+    public async Task DeleteTranslationAsync(
+        int id,
+        CancellationToken cancellationToken = default)
     {
-        var transaction = await context.Translations.SingleOrDefaultAsync(t => t.Id == id);
-        if (transaction is null)
-            throw new ArgumentNullException();
+        var translation = await context.Translations
+            .SingleOrDefaultAsync(item => item.Id == id, cancellationToken);
 
-        context.Translations.Remove(transaction);
-        await context .SaveChangesAsync();
-    }
+        if (translation is null)
+            return;
 
-    public async Task<TranslationResponseDTO?> GetTranslationsAsync(string word)
-    {
-        var translations = await context.Translations
-            .AsNoTracking()
-            .Where(t => t.Word == word && t.TargetLanguage != null)
-            .Select(t => new TranslationDTO
-            {
-                Word = t.TranslatedWord,
-                LanguageCode = t.TargetLanguage!.Code
-            })
-            .ToListAsync();
-
-        if (translations.Count == 0)
-            return null;
-
-        return new TranslationResponseDTO
-        {
-            OriginalWord = word,
-            Translations = translations
-        };
+        context.Translations.Remove(translation);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

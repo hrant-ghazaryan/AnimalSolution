@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using AnimalApi;
+using AnimalModels.Entitites;
+using Microsoft.AspNetCore.Mvc;
 using TranslationDTOs;
 
 namespace AnimalApi.Controllers;
@@ -13,18 +13,39 @@ public class TranslationsController : ControllerBase
     public TranslationsController(ITranslationApiClient translationApiClient)
         => this.translationApiClient = translationApiClient;
 
-    [HttpGet("{word}")]
-    public async Task<ActionResult<TranslationResponseDTO>> GetTranslations(
-    string word,
-    CancellationToken cancellationToken)
+    [HttpGet("colors")]
+    public Task<ActionResult<TranslationGroupResponseDTO>> GetColors(
+        [FromQuery] string languageCode = "hy",
+        CancellationToken cancellationToken = default)
+        => GetEnumTranslations<Color>(languageCode, cancellationToken);
+
+    [HttpGet("genders")]
+    public Task<ActionResult<TranslationGroupResponseDTO>> GetGenders(
+        [FromQuery] string languageCode = "hy",
+        CancellationToken cancellationToken = default)
+        => GetEnumTranslations<AnimalGender>(languageCode, cancellationToken);
+
+    private async Task<ActionResult<TranslationGroupResponseDTO>> GetEnumTranslations<TEnum>(
+        string languageCode,
+        CancellationToken cancellationToken)
+        where TEnum : struct, Enum
     {
-        var result = await translationApiClient.GetTranslationsAsync(
-            word,
-            cancellationToken);
+        if (string.IsNullOrWhiteSpace(languageCode))
+            return BadRequest("The languageCode query parameter is required.");
 
-        if (result is null)
-            return NotFound();
+        var normalizedLanguageCode = languageCode
+            .Split('-', StringSplitOptions.RemoveEmptyEntries)[0]
+            .Trim()
+            .ToLowerInvariant();
 
-        return Ok(result);
+        var values = await translationApiClient
+            .GetEnumTranslationsAsync<TEnum>(normalizedLanguageCode);
+
+        return Ok(new TranslationGroupResponseDTO
+        {
+            ResourceType = typeof(TEnum).Name,
+            LanguageCode = normalizedLanguageCode,
+            Values = new Dictionary<string, string>(values)
+        });
     }
 }

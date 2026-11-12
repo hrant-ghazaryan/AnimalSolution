@@ -4,12 +4,8 @@ public class Translation
 {
     public int Id { get; set; }
 
-    public int? SourceLanguageId { get; set; }
-    public Language? SourceLanguage { get; set; }
-
-    public int? TargetLanguageId { get; set; }
-    public Language? TargetLanguage { get; set; }
-
-    public string Word { get; set; } = null!;
-    public string TranslatedWord { get; set; } = null!;
+    public string ResourceType { get; set; } = null!;
+    public string ResourceCode { get; set; } = null!;
+    public string LanguageCode { get; set; } = null!;
+    public string Value { get; set; } = null!;
 }

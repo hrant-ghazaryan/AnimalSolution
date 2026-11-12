@@ -20,8 +20,8 @@ namespace AnimalModels.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<byte>(type: "tinyint", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClosedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },

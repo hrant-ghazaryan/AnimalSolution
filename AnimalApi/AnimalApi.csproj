@@ -27,7 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AnimalServicesLibrary\AnimalServices.csproj" />
+    <ProjectReference Include="..\AnimalModels\AnimalModels.csproj" />
+    <ProjectReference Include="..\AnimalServices\AnimalServices.csproj" />
     <ProjectReference Include="..\RequestDTOs\RequestDTOs.csproj" />
     <ProjectReference Include="..\TranslationDTOs\TranslationDTOs.csproj" />
   </ItemGroup>

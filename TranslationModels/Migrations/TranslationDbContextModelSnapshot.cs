@@ -21,27 +21,6 @@ namespace TranslationModels.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TranslationModels.Entitites.Language", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Languages");
-                });
-
             modelBuilder.Entity("TranslationModels.Entitites.Translation", b =>
                 {
                     b.Property<int>("Id")
@@ -50,44 +29,32 @@ namespace TranslationModels.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("SourceLanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TargetLanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TranslatedWord")
+                    b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("Word")
+                    b.Property<string>("ResourceCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ResourceType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SourceLanguageId");
-
-                    b.HasIndex("TargetLanguageId");
+                    b.HasIndex("ResourceType", "ResourceCode", "LanguageCode")
+                        .IsUnique();
 
                     b.ToTable("Translations");
-                });
-
-            modelBuilder.Entity("TranslationModels.Entitites.Translation", b =>
-                {
-                    b.HasOne("TranslationModels.Entitites.Language", "SourceLanguage")
-                        .WithMany()
-                        .HasForeignKey("SourceLanguageId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("TranslationModels.Entitites.Language", "TargetLanguage")
-                        .WithMany()
-                        .HasForeignKey("TargetLanguageId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("SourceLanguage");
-
-                    b.Navigation("TargetLanguage");
                 });
 #pragma warning restore 612, 618
         }

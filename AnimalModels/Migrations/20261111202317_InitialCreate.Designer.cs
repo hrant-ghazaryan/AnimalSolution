@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnimalModels.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261110165241_InitialCreate")]
+    [Migration("20261111202317_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,14 +39,18 @@ namespace AnimalModels.Migrations
                     b.Property<DateTime?>("ClosedDate")
                         .HasColumnType("datetime2");
 
-                    b.PrimitiveCollection<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Gender")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

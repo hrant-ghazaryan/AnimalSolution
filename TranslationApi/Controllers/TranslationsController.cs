@@ -13,31 +13,54 @@ public class TranslationsController : ControllerBase
     public TranslationsController(ITranslationService translationService)
         => this.translationService = translationService;
 
-    [HttpGet("{word}")]
-    public async Task<ActionResult<TranslationResponseDTO>> GetTranslations(string word)
+    [HttpGet("resources/{resourceType}")]
+    public async Task<ActionResult<TranslationGroupResponseDTO>> GetResourceTranslations(
+        string resourceType,
+        [FromQuery] string languageCode,
+        CancellationToken cancellationToken)
     {
-        var result = await translationService.GetTranslationsAsync(word);
+        if (string.IsNullOrWhiteSpace(resourceType) ||
+            string.IsNullOrWhiteSpace(languageCode))
+        {
+            return BadRequest();
+        }
 
-        if (result is null)
-            return NotFound();
+        var result = await translationService.GetResourceTranslationsAsync(
+            resourceType,
+            languageCode,
+            cancellationToken);
 
         return Ok(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> AddTranslation(
-        [FromBody] TranslationCreateDTO translationCreateDTO)
+        [FromBody] TranslationCreateDTO translationCreateDTO,
+        CancellationToken cancellationToken)
     {
-        await translationService.AddTranslationAsync(translationCreateDTO);
+        await translationService.AddTranslationAsync(
+            translationCreateDTO,
+            cancellationToken);
 
-        return Ok();
+        return CreatedAtAction(
+            nameof(GetResourceTranslations),
+            new
+            {
+                resourceType = translationCreateDTO.ResourceType,
+                languageCode = translationCreateDTO.LanguageCode
+            },
+            translationCreateDTO);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTranslation(int id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteTranslation(
+        int id,
+        CancellationToken cancellationToken)
     {
-        await translationService.DeleteTranslationAsync(id);
+        await translationService.DeleteTranslationAsync(
+            id,
+            cancellationToken);
 
-        return NoContent();
+        return Ok();
     }
 }

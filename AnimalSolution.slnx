@@ -1,8 +1,8 @@
 <Solution>
   <Project Path="AnimalApi/AnimalApi.csproj" Id="552777d9-0d5c-4ec4-8936-7a373960b4da" />
   <Project Path="AnimalExceptions/AnimalExceptions.csproj" Id="126279db-2279-449c-ad26-6e2b0eaf4917" />
-  <Project Path="AnimalModelsLibrary/AnimalModels.csproj" Id="c04d8195-d6b8-4ef7-b0ef-c77d7b926c9d" />
-  <Project Path="AnimalServicesLibrary/AnimalServices.csproj" Id="03824be3-5265-4ac0-9ee5-f21b8d745a4d" />
+  <Project Path="AnimalModels/AnimalModels.csproj" />
+  <Project Path="AnimalServices/AnimalServices.csproj" />
   <Project Path="AuthApi/AuthApi.csproj" Id="8c3da9b6-bf91-4d93-8119-8b95aad50193" />
   <Project Path="AuthDTOs/AuthDTOs.csproj" Id="e9720b8f-743d-40d9-aaaf-00c64347f1d0" />
   <Project Path="AuthModels/AuthModels.csproj" Id="f3f62501-bf66-459c-a7d4-c5964c4416f6" />

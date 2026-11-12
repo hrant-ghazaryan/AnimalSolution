@@ -4,9 +4,10 @@ namespace TranslationServices;
 
 public interface ITranslationService
 {
-    Task<TranslationResponseDTO?> GetTranslationsAsync(string word);
+    Task<TranslationGroupResponseDTO?> GetResourceTranslationsAsync(string resourceType, string languageCode,
+        CancellationToken cancellationToken);
 
-    Task AddTranslationAsync(TranslationCreateDTO translationCreateDTO);
+    Task AddTranslationAsync(TranslationCreateDTO translationCreateDTO, CancellationToken cancellationToken);
 
-    Task DeleteTranslationAsync(int id);
+    Task DeleteTranslationAsync(int id, CancellationToken cancellationToken);
 }

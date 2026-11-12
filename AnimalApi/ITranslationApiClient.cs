@@ -1,10 +1,7 @@
-﻿using TranslationDTOs;
-
-namespace AnimalApi;
+﻿namespace AnimalApi;
 
 public interface ITranslationApiClient
 {
-    Task<TranslationResponseDTO?> GetTranslationsAsync(
-           string word,
-           CancellationToken cancellationToken = default);
+    Task<IDictionary<string, string>> GetEnumTranslationsAsync<T>(string languageCode) 
+        where T : Enum;
 }

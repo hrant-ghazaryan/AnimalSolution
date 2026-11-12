@@ -11,5 +11,16 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Animal>(entity =>
+        {
+            entity.Property(animal => animal.Color)
+                .HasConversion<string>()
+                .HasMaxLength(30);
+
+            entity.Property(animal => animal.Gender)
+                .HasConversion<string>()
+                .HasMaxLength(30);
+        });
     }
 }

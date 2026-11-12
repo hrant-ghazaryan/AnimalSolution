@@ -17,11 +17,6 @@ var connectionString = builder.Configuration
 builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AuthDbContext>()
-    .AddDefaultTokenProviders();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

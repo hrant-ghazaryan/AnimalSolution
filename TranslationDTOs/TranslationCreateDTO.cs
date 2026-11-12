@@ -2,8 +2,8 @@
 
 public class TranslationCreateDTO
 {
-    public string? OriginalWord { get; set; } = null!;
-    public string? TranslatedWord { get; set; } = null!;
-    public string? SourceLanguageCode { get; set; } = null!;
-    public string? TargetLanguageCode { get; set; } = null!;
+    public string ResourceType { get; set; } = null!;
+    public string ResourceCode { get; set; } = null!;
+    public string LanguageCode { get; set; } = null!;
+    public string Value { get; set; } = null!;
 }

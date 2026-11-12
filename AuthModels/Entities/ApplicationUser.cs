@@ -2,8 +2,10 @@
 
 namespace AuthModels.Entities;
 
-public class ApplicationUser : IdentityUser
+public class ApplicationUser
 {
-    public string? FirstName { get; set; }
-    public string? SecondName { get; set; }
+    public int Id { get; set; }
+    public string UserName { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Password { get; set; } = null!;
 }

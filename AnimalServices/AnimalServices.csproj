@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnimalExceptions\AnimalExceptions.csproj" />
-    <ProjectReference Include="..\AnimalModelsLibrary\AnimalModels.csproj" />
+    <ProjectReference Include="..\AnimalModels\AnimalModels.csproj" />
     <ProjectReference Include="..\RequestDTOs\RequestDTOs.csproj" />
   </ItemGroup>
 

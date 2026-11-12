@@ -2,7 +2,6 @@
 using AnimalServices.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using RequestDTOs;
-using System.Collections.Concurrent;
 
 namespace AnimalApi.Controllers;
 

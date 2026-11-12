@@ -86,7 +86,7 @@ public class AnimalService : IAnimalService
             .SingleOrDefaultAsync(item => item.Id == id);
 
         if (animal is null)
-            throw new ArgumentNullException(nameof(id));
+            throw new AnimalNotFoundException();
 
         context.Animals.Remove(animal);
 

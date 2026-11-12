@@ -18,7 +18,7 @@ public class AuthDbContext : DbContext
         {
             entity.Property(e => e.UserName).IsRequired();
             entity.Property(e => e.Email).IsRequired();
-            entity.Property(e => e.Password).IsRequired();
+            entity.Property(e => e.PasswordHash).IsRequired();
         });
 
         modelBuilder.Entity<ApplicationUser>().

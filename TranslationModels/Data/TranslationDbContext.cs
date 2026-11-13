@@ -15,11 +15,11 @@ public class TranslationDbContext : DbContext
     {
         modelBuilder.Entity<Translation>(entity =>
         {
-            entity.Property(t => t.ResourceType)
+            entity.Property(t => t.EnumType)
                 .HasMaxLength(100)
                 .IsRequired();
 
-            entity.Property(t => t.ResourceCode)
+            entity.Property(t => t.EnumValue)
                 .HasMaxLength(100)
                 .IsRequired();
 
@@ -27,14 +27,14 @@ public class TranslationDbContext : DbContext
                 .HasMaxLength(10)
                 .IsRequired();
 
-            entity.Property(t => t.Value)
+            entity.Property(t => t.TranslatedText)
                 .HasMaxLength(1000)
                 .IsRequired();
 
             entity.HasIndex(t => new
             {
-                t.ResourceType,
-                t.ResourceCode,
+                t.EnumType,
+                t.EnumValue,
                 t.LanguageCode
             }).IsUnique();
         });

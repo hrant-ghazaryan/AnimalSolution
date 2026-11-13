@@ -15,20 +15,16 @@ public class TranslationsController : ControllerBase
 
     [HttpGet("colors")]
     public Task<ActionResult<TranslationGroupResponseDTO>> GetColors(
-        [FromQuery] string languageCode = "hy",
-        CancellationToken cancellationToken = default)
-        => GetEnumTranslations<Color>(languageCode, cancellationToken);
+        [FromQuery] string languageCode = "hy")
+        => GetEnumTranslations<Color>(languageCode);
 
     [HttpGet("genders")]
     public Task<ActionResult<TranslationGroupResponseDTO>> GetGenders(
-        [FromQuery] string languageCode = "hy",
-        CancellationToken cancellationToken = default)
-        => GetEnumTranslations<AnimalGender>(languageCode, cancellationToken);
+        [FromQuery] string languageCode = "hy")
+        => GetEnumTranslations<AnimalGender>(languageCode);
 
-    private async Task<ActionResult<TranslationGroupResponseDTO>> GetEnumTranslations<TEnum>(
-        string languageCode,
-        CancellationToken cancellationToken)
-        where TEnum : struct, Enum
+    public async Task<ActionResult<TranslationGroupResponseDTO>> GetEnumTranslations<T>(
+        string languageCode) where T : Enum
     {
         if (string.IsNullOrWhiteSpace(languageCode))
             return BadRequest("The languageCode query parameter is required.");
@@ -39,13 +35,13 @@ public class TranslationsController : ControllerBase
             .ToLowerInvariant();
 
         var values = await translationApiClient
-            .GetEnumTranslationsAsync<TEnum>(normalizedLanguageCode);
+            .GetEnumTranslationsAsync<T>(normalizedLanguageCode);
 
         return Ok(new TranslationGroupResponseDTO
         {
-            ResourceType = typeof(TEnum).Name,
+            EnumType = typeof(T).Name,
             LanguageCode = normalizedLanguageCode,
-            Values = new Dictionary<string, string>(values)
+            TranslatedWords = new Dictionary<string, string>(values)
         });
     }
 }

@@ -7,10 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="UserNameTextBox" HorizontalAlignment="Left" Height="34" Margin="312,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136" />
-        <TextBox x:Name="EmailTextBox" HorizontalAlignment="Left" Height="37" Margin="312,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="136"/>
-        <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Height="31" Margin="312,178,0,0"  VerticalAlignment="Top" Width="136"/>
-        <PasswordBox x:Name="ConfirmPasswordBox" HorizontalAlignment="Left" Height="36" Margin="312,248,0,0" VerticalAlignment="Top" Width="136"/>
+        <TextBox x:Name="UserNameTextBox" HorizontalAlignment="Left" Height="34" Margin="312,42,0,0" TextWrapping="Wrap" Text="{Binding RegisterDto.UserName,
+                        UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="136" />
+        <TextBox x:Name="EmailTextBox" HorizontalAlignment="Left" Height="37" Margin="312,101,0,0" TextWrapping="Wrap" Text="{Binding RegisterDto.Email,
+                        UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="136"/>
+        <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Height="31" Margin="312,178,0,0"  PasswordChanged="PasswordBox_PasswordChanged" VerticalAlignment="Top" Width="136"/>
+        <PasswordBox x:Name="ConfirmPasswordBox" HorizontalAlignment="Left" Height="36" Margin="312,248,0,0" PasswordChanged="ConfirmPasswordBox_PasswordChanged" VerticalAlignment="Top" Width="136"/>
 
         <Button Content="Register" Click="RegisterButton_Click" HorizontalAlignment="Left" Height="31" Margin="253,317,0,0" VerticalAlignment="Top" Width="90"/>
         <Button Content="Login" Click="LoginButton_Click" HorizontalAlignment="Left" Height="31" Margin="410,317,0,0" VerticalAlignment="Top" Width="96"/>
@@ -20,6 +22,6 @@
         <Label Content="Password" HorizontalAlignment="Left" Height="39" Margin="164,178,0,0" VerticalAlignment="Top" Width="115"/>
         <Label Content="Confirm Password" HorizontalAlignment="Left" Height="36" Margin="164,248,0,0" VerticalAlignment="Top" Width="115"/>
         
-        <TextBlock x:Name="MessageTextBlock" HorizontalAlignment="Left" Height="79" Margin="547,138,0,0" TextWrapping="Wrap" Text="Result Message" VerticalAlignment="Top" Width="199"/>
+        <TextBlock x:Name="MessageTextBlock" HorizontalAlignment="Left" Height="79" Margin="547,138,0,0" TextWrapping="Wrap" Text="{Binding Message}" VerticalAlignment="Top" Width="199"/>
     </Grid>
 </Window>

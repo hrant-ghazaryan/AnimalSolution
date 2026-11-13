@@ -1,3 +1,4 @@
+using AnimalApi;
 using AuthModels.Data;
 using AuthModels.Entities;
 using AuthServices;
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddScoped<
     IPasswordHasher<ApplicationUser>,
@@ -35,7 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 
 app.UseAuthorization();

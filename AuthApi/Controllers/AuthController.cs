@@ -19,23 +19,9 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register(
         [FromBody] RegisterRequestDto request)
     {
-        var isRegistered = await authenticationService
-            .RegisterAsync(request);
+        await authenticationService.RegisterAsync(request);
 
-        if (!isRegistered)
-        {
-            return Conflict(new
-            {
-                message = "User with this email or username already exists."
-            });
-        }
-
-        return StatusCode(
-            StatusCodes.Status201Created,
-            new
-            {
-                message = "User registered successfully."
-            });
+        return Ok();
     }
 
     [HttpPost("login")]
@@ -44,14 +30,6 @@ public class AuthController : ControllerBase
     {
         var result = await authenticationService
             .LoginAsync(request);
-
-        if (result is null)
-        {
-            return Unauthorized(new
-            {
-                message = "Invalid email or password."
-            });
-        }
 
         return Ok(result);
     }

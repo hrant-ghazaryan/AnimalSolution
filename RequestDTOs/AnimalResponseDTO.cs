@@ -8,7 +8,7 @@ public class AnimalResponseDTO
 
     public double Weight { get; set; }
 
-    public TranslatedValueDTO Color { get; set; } = null!;
+    public string Color { get; set; } = null!;
 
-    public TranslatedValueDTO Gender { get; set; } = null!;
+    public string Gender { get; set; } = null!;
 }

@@ -1,7 +1,9 @@
-﻿using System.Net.Http;
+﻿using AuthDTOs;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
+using AnimalWpf.ViewModels;
 
 namespace AnimalWpf
 {
@@ -11,53 +13,62 @@ namespace AnimalWpf
         {
             BaseAddress = new Uri("https://localhost:7184/")
         };
+        private readonly RegisterViewModel viewModel;
 
         public MainWindow()
         {
+            viewModel = new RegisterViewModel();
             InitializeComponent();
+            DataContext = viewModel;
         }
 
         private async void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            if (PasswordBox.Password != ConfirmPasswordBox.Password)
+            if (viewModel.RegisterDto.Password != viewModel.ConfirmPassword)
             {
-                MessageTextBlock.Text = "Passwords do not match.";
+                viewModel.Message = "Passwords do not match.";
                 return;
             }
 
-            var userData = new
-            {
-                UserName = UserNameTextBox.Text,
-                Email = EmailTextBox.Text,
-                Password = PasswordBox.Password
-            };
-            
-            var json = JsonSerializer.Serialize(userData, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            var json = JsonSerializer.Serialize(
+                viewModel.RegisterDto,
+                new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var content = new StringContent(
+                json,
+                Encoding.UTF8,
+                "application/json");
 
             try
             {
-                var response = await httpClient.PostAsync("api/auth/register", content);
+                var response = await httpClient.PostAsync(
+                    "api/auth/register",
+                    content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageTextBlock.Text = "Registration successful.";
+                    viewModel.Message = "Registration successful.";
                     return;
                 }
 
                 var errorJson = await response.Content.ReadAsStringAsync();
 
-                MessageTextBlock.Text = $"Registration failed: {errorJson}";
+                viewModel.Message = $"Registration failed: {errorJson}";
             }
             catch (HttpRequestException)
             {
-                MessageTextBlock.Text = "Could not connect to Auth API.";
+                viewModel.Message = "Could not connect to Auth API.";
             }
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+            => viewModel.RegisterDto.Password = PasswordBox.Password;
+
+        private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+            => viewModel.ConfirmPassword = ConfirmPasswordBox.Password;
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {

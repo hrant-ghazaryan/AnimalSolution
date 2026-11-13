@@ -12,74 +12,67 @@ public class TranslationService : ITranslationService
     public TranslationService(TranslationDbContext context)
         => this.context = context;
 
-    public async Task<TranslationGroupResponseDTO?> GetResourceTranslationsAsync(
-        string resourceType,
-        string languageCode,
-        CancellationToken cancellationToken = default)
+    public async Task<TranslationGroupResponseDTO?> GetEnumTranslationsAsync(
+        string enumType, string languageCode)
     {
-        var normalizedResourceType = resourceType.Trim();
+        var normalizedEnumType = enumType.Trim();
         var normalizedLanguageCode = languageCode.Trim().ToLowerInvariant();
 
-        var values = await context.Translations
+        var translatedWards = await context.Translations
             .AsNoTracking()
             .Where(translation =>
-                translation.ResourceType == normalizedResourceType &&
+                translation.EnumType == normalizedEnumType &&
                 translation.LanguageCode == normalizedLanguageCode)
             .ToDictionaryAsync(
-                translation => translation.ResourceCode,
-                translation => translation.Value,
-                cancellationToken);
+                translation => translation.EnumValue,
+                translation => translation.TranslatedText);
 
         return new TranslationGroupResponseDTO
         {
-            ResourceType = normalizedResourceType,
+            EnumType = normalizedEnumType,
             LanguageCode = normalizedLanguageCode,
-            Values = values
+            TranslatedWords = translatedWards
         };
     }
 
     public async Task AddTranslationAsync(
-        TranslationCreateDTO dto,
-        CancellationToken cancellationToken = default)
+        TranslationCreateDTO dto)
     {
-        var resourceType = dto.ResourceType.Trim();
-        var resourceCode = dto.ResourceCode.Trim();
+        var enumType = dto.EnumType.Trim();
+        var enumValue = dto.EnumValue.Trim();
         var languageCode = dto.LanguageCode.Trim().ToLowerInvariant();
-        var value = dto.Value.Trim();
+        var translatedText = dto.TranslatedText.Trim();
 
         var alreadyExists = await context.Translations.AnyAsync(
             translation =>
-                translation.ResourceType == resourceType &&
-                translation.ResourceCode == resourceCode &&
-                translation.LanguageCode == languageCode,
-            cancellationToken);
+                translation.EnumType == enumType &&
+                translation.EnumValue == enumValue &&
+                translation.LanguageCode == languageCode);
 
         if (alreadyExists)
             return;
 
         var translation = new Translation
         {
-            ResourceType = resourceType,
-            ResourceCode = resourceCode,
+            EnumType = enumType,
+            EnumValue = enumValue,
             LanguageCode = languageCode,
-            Value = value
+            TranslatedText = translatedText
         };
 
-        await context.Translations.AddAsync(translation, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
+        await context.Translations.AddAsync(translation);
+        await context.SaveChangesAsync();
     }
 
-    public async Task DeleteTranslationAsync(
-        int id,
-        CancellationToken cancellationToken = default)
+    public async Task DeleteTranslationAsync(int id)
     {
         var translation = await context.Translations
-            .SingleOrDefaultAsync(item => item.Id == id, cancellationToken);
+            .SingleOrDefaultAsync(t => t.Id == id);
 
         if (translation is null)
             return;
 
         context.Translations.Remove(translation);
-        await context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync();
     }
 }

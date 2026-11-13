@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnimalExceptions\AnimalExceptions.csproj" />
     <ProjectReference Include="..\AuthDTOs\AuthDTOs.csproj" />
     <ProjectReference Include="..\AuthModels\AuthModels.csproj" />
   </ItemGroup>

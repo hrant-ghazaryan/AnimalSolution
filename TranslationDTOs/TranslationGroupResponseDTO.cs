@@ -2,8 +2,8 @@
 
 public class TranslationGroupResponseDTO
 {
-    public string ResourceType { get; set; } = null!;
+    public string EnumType { get; set; } = null!;
     public string LanguageCode { get; set; } = null!;
 
-    public Dictionary<string, string> Values { get; set; } = new();
+    public Dictionary<string, string> TranslatedWords { get; set; } = new();
 }

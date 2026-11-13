@@ -10,6 +10,16 @@ public class ExceptionHandlingMiddleware : IMiddleware
         {
             await next(context);
         }
+        catch (AuthenticationException authException)
+        {
+            LogToFile(authException);
+            context.Response.StatusCode = authException.StatusCode;
+            await context.Response.WriteAsJsonAsync(new ErrorModel
+            {
+                ErrorMessage = authException.Message,
+                ErrorStatus = authException.StatusCode
+            });
+        }
         catch (AnimalException animalException)
         {
             LogToFile(animalException);
@@ -34,13 +44,20 @@ public class ExceptionHandlingMiddleware : IMiddleware
     }
     private void LogToFile(Exception exception)
     {
-        using (StreamWriter writer = new StreamWriter(@"D:\Desktop\ExceptionLogs.txt", true))
+        try
         {
-            writer.WriteLine($"Date: {DateTime.Now}");
-            writer.WriteLine($"Message: {exception.Message}");
-            writer.WriteLine("StackTrace:");
-            writer.WriteLine(exception.StackTrace);
-            writer.WriteLine("-----------------------------------");
+            using (StreamWriter writer = new StreamWriter(@"D:\Desktop\ExceptionLogs.txt", true))
+            {
+                writer.WriteLine($"Date: {DateTime.Now}");
+                writer.WriteLine($"Message: {exception.Message}");
+                writer.WriteLine("StackTrace:");
+                writer.WriteLine(exception.StackTrace);
+                writer.WriteLine("-----------------------------------");
+            }
+        }
+        catch
+        {
+            Console.WriteLine($"{DateTime.Now}: {exception.Message}");
         }
     }
 }

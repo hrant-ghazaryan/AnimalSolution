@@ -17,7 +17,7 @@ public class AnimalService : IAnimalService
 
     public async Task Add(AnimalDTO animalDTO)
     {
-        if (animalDTO.Weight < 0 || animalDTO.Age < 0)
+        if (animalDTO.Weight <= 0 || animalDTO.Age <= 0)
             throw new AnimalInvalidData("Invalid Animal Input Data");
 
         var animal = AnimalMapper.MapToEntity(animalDTO);

@@ -76,18 +76,8 @@ public class AnimalsController : ControllerBase
                 Name = animal.Name,
                 Age = animal.Age,
                 Weight = animal.Weight,
-
-                Color = new TranslatedValueDTO
-                {
-                    Code = colorCode,
-                    DisplayName = colorDisplayName
-                },
-
-                Gender = new TranslatedValueDTO
-                {
-                    Code = genderCode,
-                    DisplayName = genderDisplayName
-                }
+                Color = colorDisplayName,
+                Gender = genderDisplayName
             };
         });
 

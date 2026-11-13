@@ -1,4 +1,5 @@
-﻿using AuthDTOs;
+﻿using AnimalExceptions;
+using AuthDTOs;
 using AuthModels.Data;
 using AuthModels.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +28,7 @@ public class AuthenticationService : IAuthenticationService
         this.configuration = configuration;
     }
 
-    public async Task<bool> RegisterAsync(RegisterRequestDto request)
+    public async Task RegisterAsync(RegisterRequestDto request)
     {
         var email = request.Email.Trim().ToLowerInvariant();
         var userName = request.UserName.Trim();
@@ -37,7 +38,7 @@ public class AuthenticationService : IAuthenticationService
             user.UserName == userName);
 
         if (alreadyExists)
-            return false;
+            throw new UserExistsException();
 
         var user = new ApplicationUser
         {
@@ -51,8 +52,6 @@ public class AuthenticationService : IAuthenticationService
 
         await context.Users.AddAsync(user);
         await context.SaveChangesAsync();
-
-        return true;
     }
 
     public async Task<AuthResponseDto?> LoginAsync(LoginRequestDto request)
@@ -63,7 +62,7 @@ public class AuthenticationService : IAuthenticationService
             .SingleOrDefaultAsync(u => u.Email == email);
 
         if (user is null)
-            return null;
+            throw new Exception("Invalid email or password.");
 
         var passwordResult = passwordHasher.VerifyHashedPassword(
             user,
@@ -71,7 +70,7 @@ public class AuthenticationService : IAuthenticationService
             request.Password);
 
         if (passwordResult == PasswordVerificationResult.Failed)
-            return null;
+            throw new Exception("Wrong password.");
 
         return CreateToken(user);
     }

@@ -13,53 +13,43 @@ public class TranslationsController : ControllerBase
     public TranslationsController(ITranslationService translationService)
         => this.translationService = translationService;
 
-    [HttpGet("resources/{resourceType}")]
-    public async Task<ActionResult<TranslationGroupResponseDTO>> GetResourceTranslations(
-        string resourceType,
-        [FromQuery] string languageCode,
-        CancellationToken cancellationToken)
+    [HttpGet("resources/{enumType}")]
+    public async Task<ActionResult<TranslationGroupResponseDTO>> GetEnumTranslations(
+        string enumType, [FromQuery] string languageCode)
     {
-        if (string.IsNullOrWhiteSpace(resourceType) ||
+        if (string.IsNullOrWhiteSpace(enumType) ||
             string.IsNullOrWhiteSpace(languageCode))
         {
             return BadRequest();
         }
 
-        var result = await translationService.GetResourceTranslationsAsync(
-            resourceType,
-            languageCode,
-            cancellationToken);
+        var result = await translationService.GetEnumTranslationsAsync(
+            enumType, languageCode);
 
         return Ok(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> AddTranslation(
-        [FromBody] TranslationCreateDTO translationCreateDTO,
-        CancellationToken cancellationToken)
+        [FromBody] TranslationCreateDTO translationCreateDTO)
     {
         await translationService.AddTranslationAsync(
-            translationCreateDTO,
-            cancellationToken);
+            translationCreateDTO);
 
         return CreatedAtAction(
-            nameof(GetResourceTranslations),
+            nameof(GetEnumTranslations),
             new
             {
-                resourceType = translationCreateDTO.ResourceType,
+                enumType = translationCreateDTO.EnumType,
                 languageCode = translationCreateDTO.LanguageCode
             },
             translationCreateDTO);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteTranslation(
-        int id,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteTranslation(int id)
     {
-        await translationService.DeleteTranslationAsync(
-            id,
-            cancellationToken);
+        await translationService.DeleteTranslationAsync(id);
 
         return Ok();
     }

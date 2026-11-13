@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AuthDTOs\AuthDTOs.csproj" />
     <ProjectReference Include="..\RequestDTOs\RequestDTOs.csproj" />
   </ItemGroup>
 

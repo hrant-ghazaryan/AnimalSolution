@@ -2,16 +2,14 @@
 using AnimalModels.Data;
 using AnimalServices.Intefaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using RequestDTOs;
-using System.Collections.Concurrent;
 
 namespace AnimalServices.Implementations;
 
 public class AnimalService : IAnimalService
 {
     private readonly AppDbContext context;
-    private static readonly ConcurrentDictionary<int, SemaphoreSlim> animalLocks = new();
-
     public AnimalService(AppDbContext context)
         => this.context = context;
 
@@ -48,35 +46,38 @@ public class AnimalService : IAnimalService
 
     public async Task Update(int id, AnimalDTO animalDTO)
     {
-        var animalLock = animalLocks.GetOrAdd(
-            id,
-            _ => new SemaphoreSlim(1, 1));
+        if (animalDTO is null)
+            throw new AnimalInvalidData("AnimalDTO is null");
 
-        if (!await animalLock.WaitAsync(0))
-            throw new AnimalLockedException();
+        if (animalDTO.Weight <= 0 || animalDTO.Age <= 0)
+            throw new AnimalInvalidData("Invalid Animal Input Data");
+
+        if (animalDTO.RowVersion.Length == 0)
+            throw new AnimalInvalidData("RowVersion is required");
+
+        var animal = await context.Animals
+            .SingleOrDefaultAsync(item => item.Id == id);
+
+        if (animal is null)
+            throw new AnimalNotFoundException();
+
+        context.Entry(animal)
+           .Property(item => item.RowVersion)
+           .OriginalValue = animalDTO.RowVersion;
+
+        animal.Name = animalDTO.Name;
+        animal.Age = animalDTO.Age;
+        animal.Weight = animalDTO.Weight;
+        animal.Color = animalDTO.Color;
+        animal.Gender = animalDTO.Gender;
 
         try
         {
-            if (animalDTO.Weight < 0 || animalDTO.Age < 0)
-                throw new AnimalInvalidData("Invalid Animal Input Data");
-
-            var animal = await context.Animals
-                .SingleOrDefaultAsync(item => item.Id == id);
-
-            if (animal is null)
-                throw new AnimalNotFoundException();
-
-            animal.Name = animalDTO.Name;
-            animal.Age = animalDTO.Age;
-            animal.Weight = animalDTO.Weight;
-            animal.Color = animalDTO.Color;
-            animal.Gender = animalDTO.Gender;
-
             await context.SaveChangesAsync();
         }
-        finally
+        catch(DbUpdateConcurrencyException)
         {
-            animalLock.Release();
+            throw new AnimalConcurrencyException();
         }
     }
 

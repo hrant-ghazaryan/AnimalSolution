@@ -40,6 +40,14 @@ public class AnimalsController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<AnimalDTO>> Get(int id)
+    {
+        var animal = await animalService.Get(id);
+
+        return Ok(animal);
+    }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AnimalResponseDTO>>> GetAll(
         [FromHeader(Name = "Accept-Language")] string? acceptLanguage)

@@ -21,6 +21,9 @@ public class AppDbContext : DbContext
             entity.Property(animal => animal.Gender)
                 .HasConversion<string>()
                 .HasMaxLength(30);
+
+            entity.Property(animal => animal.RowVersion)
+                .IsRowVersion();
         });
     }
 }

@@ -10,4 +10,6 @@ public class AnimalDTO
 
     public Color Color { get; set; }
     public AnimalGender Gender { get; set; }
+
+    public byte[] RowVersion { get; set; } = [];
 }

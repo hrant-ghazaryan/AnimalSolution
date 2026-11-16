@@ -12,7 +12,8 @@ public static class AnimalMapper
             Age = animal.Age,
             Weight = animal.Weight,
             Color = animal.Color,
-            Gender = animal.Gender
+            Gender = animal.Gender,
+            RowVersion = animal.RowVersion
         };
     public static IEnumerable<AnimalDTO> MapToDTOs(IEnumerable<Animal> animals)
     {

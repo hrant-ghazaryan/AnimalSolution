@@ -12,6 +12,8 @@ public class Animal
 
     public DateTime CreatedAt { get; set; }
     public DateTime? ClosedDate { get; set; }
+
+    public byte[] RowVersion { get; set; } = [];
 }
 public enum AnimalGender : byte
 {

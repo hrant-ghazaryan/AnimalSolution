@@ -23,7 +23,8 @@ namespace AnimalModels.Migrations
                     Color = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClosedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ClosedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

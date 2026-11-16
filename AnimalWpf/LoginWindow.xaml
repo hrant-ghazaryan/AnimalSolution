@@ -1,0 +1,66 @@
+<Window x:Class="AnimalWpf.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login"
+        Width="400"
+        Height="400"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <TextBlock Text="Login"
+               FontSize="26"
+               FontWeight="SemiBold"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               Margin="0,28,0,0" />
+
+        <Label Content="Email"
+           HorizontalAlignment="Left"
+           VerticalAlignment="Top"
+           Margin="55,81,0,0" />
+
+        <TextBox x:Name="LoginEmailTextBox"
+             Width="290"
+             Height="32"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Top"
+             Margin="0,104,0,0" />
+
+        <Label Content="Password"
+           HorizontalAlignment="Left"
+           VerticalAlignment="Top"
+           Margin="55,143,0,0" />
+
+        <PasswordBox x:Name="LoginPasswordBox"
+                 Width="290"
+                 Height="32"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Top" Margin="0,167,0,0" />
+
+        <Button Content="Login"
+            Width="290"
+            Height="32"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Margin="0,226,0,0"
+            Click="LoginButton_Click" />
+
+        <Button Content="Create account"
+            Width="290"
+            Height="32"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Margin="0,275,0,0"
+            Click="OpenRegisterWindowButton_Click" />
+
+        <TextBlock x:Name="MessageTextBlock"
+               Width="290"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               TextAlignment="Center"
+               TextWrapping="Wrap"
+               Margin="0,328,0,0" Height="32" />
+    </Grid>
+
+</Window>

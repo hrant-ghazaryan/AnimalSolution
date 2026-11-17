@@ -48,8 +48,42 @@ public class AnimalsController : ControllerBase
         return Ok(animal);
     }
 
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Remove(int id)
+    {
+        await animalService.Remove(id);
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id:int}/close")]
+    public async Task<IActionResult> Close(int id)
+    {
+        await animalService.Close(id);
+
+        return NoContent();
+    }
+
+    [HttpGet("pages")]
+    public async Task<ActionResult<IEnumerable<AnimalDTO>>> GetAnimalByPageAndCount(
+        [FromQuery] int page, [FromQuery] int count)
+    {
+        var animals = await animalService.GetAnimalByPageAndCount(page, count);
+
+        return Ok(animals);
+    }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<AnimalDTO>>> SearchBy(
+        [FromQuery] string word)
+    {
+        var animals = await animalService.SearchBy(word);
+
+        return Ok(animals);
+    }
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AnimalResponseDTO>>> GetAll(
+    public async Task<ActionResult<AnimalListResponseDTO>> GetAll(
         [FromHeader(Name = "Accept-Language")] string? acceptLanguage)
     {
         var languageCode = GetLanguageCode(acceptLanguage);
@@ -87,9 +121,13 @@ public class AnimalsController : ControllerBase
                 Color = colorDisplayName,
                 Gender = genderDisplayName
             };
-        });
+        }).ToList();
 
-        return Ok(result);
+        return Ok(new AnimalListResponseDTO
+        {
+            Count = result.Count(),
+            Animals = result
+        });
     }
 
     private string GetLanguageCode(string? acceptLanguage)

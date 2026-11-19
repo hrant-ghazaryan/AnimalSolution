@@ -1,4 +1,4 @@
-﻿namespace RequestDTOs;
+﻿namespace AnimalDTOs;
 
 public class AnimalResponseDTO
 {

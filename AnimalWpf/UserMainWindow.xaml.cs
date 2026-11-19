@@ -11,6 +11,7 @@ public partial class UserMainWindow : Window
 
     private void Logout_Click(object sender, RoutedEventArgs e)
     {
+        LoginWindow.LoginedUser = null;
         Close();
     }
 

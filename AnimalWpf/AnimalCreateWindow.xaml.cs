@@ -1,14 +1,19 @@
-﻿using System.Net.Http;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Windows;
 using System.Windows.Controls;
+using AnimalDTOs;
+using AnimalModels.Entitites;
 using TranslationDTOs;
 
 namespace AnimalWpf;
 
 public partial class AnimalCreateWindow : Window
 {
-    private readonly string defaultLanguage = "en";
+    private string defaultLanguage = "en";
     HttpClient animalClient = new()
     {
         BaseAddress = new Uri("https://localhost:7150/")
@@ -53,5 +58,50 @@ public partial class AnimalCreateWindow : Window
         genderComboBox.ItemsSource = genders?.TranslatedWords.ToList();
         genderComboBox.DisplayMemberPath = "Value";
         genderComboBox.SelectedValuePath = "Key";
+    }
+
+    private async void AnimalCreate_Click(object sender, RoutedEventArgs e)
+    {
+        if (LoginWindow.LoginedUser is null)
+            throw new UnauthorizedAccessException();
+        
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwt = tokenHandler.ReadJwtToken(LoginWindow.LoginedUser?.AccessToken);
+
+        var userName = jwt.Claims.
+            FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+        if (string.IsNullOrEmpty(userName))
+            throw new InvalidDataException();
+
+        var color = Enum.TryParse<Color>(
+            colorComboBox.SelectedValue?.ToString(), out var parsedColor);
+        var gender = Enum.TryParse<AnimalGender>(
+            genderComboBox.SelectedValue?.ToString(), out var parsedGender);
+
+        var animalCreateDTO = new AnimalCreateDTO
+        {
+            Name = nameTextBox.Text,
+            Age = int.Parse(ageTextBox.Text),
+            Weight = double.Parse(weightTextBox.Text),
+            Color = parsedColor,
+            Gender = parsedGender,
+            OwnedBy = userName
+        };
+
+        try
+        {
+            var response = await animalClient.PostAsJsonAsync("api/Animals", animalCreateDTO);
+
+            if (response.IsSuccessStatusCode)
+                messageTextBox.Text = "Animal created successfully.";
+            else
+                messageTextBox.Text = $"Failed to create animal. Status code: {response.StatusCode}";
+        }
+        catch(HttpRequestException)
+        {
+            messageTextBox.Text =
+                "Could not connect to Auth API.";
+        }
     }
 }

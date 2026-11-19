@@ -1,7 +1,7 @@
 ﻿using AnimalModels.Entitites;
 using AnimalServices.Intefaces;
 using Microsoft.AspNetCore.Mvc;
-using RequestDTOs;
+using AnimalDTOs;
 
 namespace AnimalApi.Controllers;
 
@@ -24,7 +24,7 @@ public class AnimalsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] AnimalDTO dto)
+    public async Task<IActionResult> Add([FromBody] AnimalCreateDTO dto)
     {
         await animalService.Add(dto);
 
@@ -33,7 +33,7 @@ public class AnimalsController : ControllerBase
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(
-    int id, [FromBody] AnimalDTO dto)
+    int id, [FromBody] AnimalCreateDTO dto)
     {
         await animalService.Update(id, dto);
 
@@ -41,7 +41,7 @@ public class AnimalsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<AnimalDTO>> Get(int id)
+    public async Task<ActionResult<AnimalCreateDTO>> Get(int id)
     {
         var animal = await animalService.Get(id);
 
@@ -65,7 +65,7 @@ public class AnimalsController : ControllerBase
     }
 
     [HttpGet("pages")]
-    public async Task<ActionResult<IEnumerable<AnimalDTO>>> GetAnimalByPageAndCount(
+    public async Task<ActionResult<IEnumerable<AnimalCreateDTO>>> GetAnimalByPageAndCount(
         [FromQuery] int page, [FromQuery] int count)
     {
         var animals = await animalService.GetAnimalByPageAndCount(page, count);
@@ -74,7 +74,7 @@ public class AnimalsController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<AnimalDTO>>> SearchBy(
+    public async Task<ActionResult<IEnumerable<AnimalCreateDTO>>> SearchBy(
         [FromQuery] string word)
     {
         var animals = await animalService.SearchBy(word);

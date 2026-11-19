@@ -114,8 +114,8 @@ public class AuthenticationService : IAuthenticationService
 
         return new AuthResponseDto
         {
-            AccessToken = new JwtSecurityTokenHandler()
-                .WriteToken(token),
+            AccessToken = new JwtSecurityTokenHandler().
+                WriteToken(token),
 
             ExpiresAt = expiresAt
         };

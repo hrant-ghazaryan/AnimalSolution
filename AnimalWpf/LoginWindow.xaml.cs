@@ -1,14 +1,15 @@
-﻿using AuthDTOs;
-using System.Net.Http;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
-using System.Windows.Threading;
+using AuthDTOs;
 
 namespace AnimalWpf;
 
 public partial class LoginWindow : Window
 {
+    public static AuthResponseDto? LoginedUser { get; set; }
     private static readonly HttpClient httpClient = new()
     {
         BaseAddress = new Uri("https://localhost:7184/")
@@ -16,6 +17,7 @@ public partial class LoginWindow : Window
 
     public LoginWindow()
     {
+        LoginedUser = new();
         InitializeComponent();
     }
 
@@ -37,34 +39,28 @@ public partial class LoginWindow : Window
             Password = password
         };
 
-        var json = JsonSerializer.Serialize(
-            loginRequest,
-            new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-
-        var content = new StringContent(
-            json,
-            Encoding.UTF8,
-            "application/json");
-
         loginProgressBar.Value = 0;
         loginProgressBar.Visibility = Visibility.Visible;
         loginButton.IsEnabled = false;
 
         try
         {
-            var response = await httpClient.PostAsync("api/auth/login", content);
+            var response = await httpClient.PostAsJsonAsync("api/auth/login", loginRequest);
 
             loginProgressBar.Value = 100;
             await Task.Delay(200);
 
             if (response.IsSuccessStatusCode)
             {
+                if (response is null || response.Content is null)
+                    return;
+
+                LoginedUser = await response.Content.ReadFromJsonAsync<AuthResponseDto>();
+
                 MessageTextBlock.Text = "Login successful.";
                 var userProfile = new UserMainWindow();
                 userProfile.Show();
+
                 Close();
                 return;
             }

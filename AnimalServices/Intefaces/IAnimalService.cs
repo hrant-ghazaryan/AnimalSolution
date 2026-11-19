@@ -1,22 +1,22 @@
-﻿using RequestDTOs;
+﻿using AnimalDTOs;
 
 namespace AnimalServices.Intefaces;
 
 public interface IAnimalService
 {
-    Task Add(AnimalDTO animal);
+    Task Add(AnimalCreateDTO animal);
 
-    Task<AnimalDTO> Get(int id);
+    Task<AnimalCreateDTO> Get(int id);
 
-    Task<IEnumerable<AnimalDTO>> GetAll();
+    Task<IEnumerable<AnimalCreateDTO>> GetAll();
 
-    Task Update(int id, AnimalDTO animal);
+    Task Update(int id, AnimalCreateDTO animal);
 
     Task Remove(int id);
 
     Task Close(int id);
 
-    Task<IEnumerable<AnimalDTO>> GetAnimalByPageAndCount(int page, int count);
+    Task<IEnumerable<AnimalCreateDTO>> GetAnimalByPageAndCount(int page, int count);
 
-    Task<IEnumerable<AnimalDTO>> SearchBy(string word);
+    Task<IEnumerable<AnimalCreateDTO>> SearchBy(string word);
 }

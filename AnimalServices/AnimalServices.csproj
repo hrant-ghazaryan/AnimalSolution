@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnimalDTOs\AnimalDTOs.csproj" />
     <ProjectReference Include="..\AnimalExceptions\AnimalExceptions.csproj" />
     <ProjectReference Include="..\AnimalModels\AnimalModels.csproj" />
-    <ProjectReference Include="..\RequestDTOs\RequestDTOs.csproj" />
   </ItemGroup>
 
 </Project>

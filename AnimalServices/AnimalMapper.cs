@@ -1,26 +1,27 @@
 ﻿using AnimalModels.Entitites;
-using RequestDTOs;
+using AnimalDTOs;
 
 namespace AnimalServices;
 
 public static class AnimalMapper
 {
-    public static AnimalDTO MapToDTO(Animal animal)
-        => new AnimalDTO
+    public static AnimalCreateDTO MapToDTO(Animal animal)
+        => new AnimalCreateDTO
         {
             Name = animal.Name,
             Age = animal.Age,
             Weight = animal.Weight,
+            OwnedBy = animal.OwnedBy,
             Color = animal.Color,
             Gender = animal.Gender,
             RowVersion = animal.RowVersion
         };
-    public static IEnumerable<AnimalDTO> MapToDTOs(IEnumerable<Animal> animals)
+    public static IEnumerable<AnimalCreateDTO> MapToDTOs(IEnumerable<Animal> animals)
     {
         if (animals.Count() == 0)
             return [];
 
-        List<AnimalDTO> animalDTOs = new();
+        List<AnimalCreateDTO> animalDTOs = new();
         foreach (var animal in animals)
         {
             var animalDTO = MapToDTO(animal);
@@ -29,17 +30,18 @@ public static class AnimalMapper
 
         return animalDTOs;
     }
-    public static Animal MapToEntity(AnimalDTO animal)
+    public static Animal MapToEntity(AnimalCreateDTO animal)
         => new Animal
         {
             Name = animal.Name,
             Age = animal.Age,
             Weight = animal.Weight,
+            OwnedBy = animal.OwnedBy,
             Color = animal.Color,
             Gender = animal.Gender,
             CreatedAt = DateTime.UtcNow
         };
-    public static IEnumerable<Animal> MapToEntities(IEnumerable<AnimalDTO> animalDTOs)
+    public static IEnumerable<Animal> MapToEntities(IEnumerable<AnimalCreateDTO> animalDTOs)
     {
         if (animalDTOs.Count() == 0)
             return [];

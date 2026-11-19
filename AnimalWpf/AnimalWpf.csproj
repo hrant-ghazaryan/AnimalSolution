@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnimalDTOs\AnimalDTOs.csproj" />
+    <ProjectReference Include="..\AnimalModels\AnimalModels.csproj" />
     <ProjectReference Include="..\AuthDTOs\AuthDTOs.csproj" />
-    <ProjectReference Include="..\RequestDTOs\RequestDTOs.csproj" />
     <ProjectReference Include="..\TranslationDTOs\TranslationDTOs.csproj" />
   </ItemGroup>
 

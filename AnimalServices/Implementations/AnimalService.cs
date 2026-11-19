@@ -1,9 +1,8 @@
-﻿using AnimalExceptions;
+﻿using AnimalDTOs;
+using AnimalExceptions;
 using AnimalModels.Data;
 using AnimalServices.Intefaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using RequestDTOs;
 
 namespace AnimalServices.Implementations;
 
@@ -13,7 +12,7 @@ public class AnimalService : IAnimalService
     public AnimalService(AppDbContext context)
         => this.context = context;
 
-    public async Task Add(AnimalDTO animalDTO)
+    public async Task Add(AnimalCreateDTO animalDTO)
     {
         if (animalDTO.Weight <= 0 || animalDTO.Age <= 0)
             throw new AnimalInvalidData("Invalid Animal Input Data");
@@ -24,7 +23,7 @@ public class AnimalService : IAnimalService
         await context.SaveChangesAsync();
     }
 
-    public async Task<AnimalDTO> Get(int id)
+    public async Task<AnimalCreateDTO> Get(int id)
     {
         var animal = await context.Animals
             .SingleOrDefaultAsync(item => item.Id == id);
@@ -35,7 +34,7 @@ public class AnimalService : IAnimalService
         return AnimalMapper.MapToDTO(animal);
     }
 
-    public async Task<IEnumerable<AnimalDTO>> GetAll()
+    public async Task<IEnumerable<AnimalCreateDTO>> GetAll()
     {
         var animals = await context.Animals
             .AsNoTracking()
@@ -44,7 +43,7 @@ public class AnimalService : IAnimalService
         return AnimalMapper.MapToDTOs(animals);
     }
 
-    public async Task Update(int id, AnimalDTO animalDTO)
+    public async Task Update(int id, AnimalCreateDTO animalDTO)
     {
         if (animalDTO is null)
             throw new AnimalInvalidData("AnimalDTO is null");
@@ -107,7 +106,7 @@ public class AnimalService : IAnimalService
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<AnimalDTO>> GetAnimalByPageAndCount(int page, int count)
+    public async Task<IEnumerable<AnimalCreateDTO>> GetAnimalByPageAndCount(int page, int count)
     {
         if (page < 1 || count < 1)
             return [];
@@ -121,7 +120,7 @@ public class AnimalService : IAnimalService
         return AnimalMapper.MapToDTOs(animals);
     }
 
-    public async Task<IEnumerable<AnimalDTO>> SearchBy(string word)
+    public async Task<IEnumerable<AnimalCreateDTO>> SearchBy(string word)
     {
         if (string.IsNullOrEmpty(word))
             return [];

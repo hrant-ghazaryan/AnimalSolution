@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace AuthModels.Entities;
+﻿namespace AuthModels.Entities;
 
 public class ApplicationUser
 {

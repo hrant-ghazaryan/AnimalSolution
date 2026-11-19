@@ -38,7 +38,8 @@
                  HorizontalAlignment="Center"
                  VerticalAlignment="Top" Margin="0,167,0,0" />
 
-        <Button Content="Login"
+        <Button Name="loginButton"
+            Content="Login"
             Width="290"
             Height="32"
             HorizontalAlignment="Center"
@@ -61,6 +62,17 @@
                TextAlignment="Center"
                TextWrapping="Wrap"
                Margin="0,328,0,0" Height="32" />
+        <ProgressBar 
+            Name="loginProgressBar" 
+            Minimum="0" 
+            Maximum="100"
+            Value="0"
+            Visibility="Collapsed"
+            HorizontalAlignment="Center"
+            Height="15"
+            Margin="0,68,0,0"
+            VerticalAlignment="Top"
+            Width="66"/>
     </Grid>
 
 </Window>

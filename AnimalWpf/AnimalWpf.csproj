@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AuthDTOs\AuthDTOs.csproj" />
     <ProjectReference Include="..\RequestDTOs\RequestDTOs.csproj" />
+    <ProjectReference Include="..\TranslationDTOs\TranslationDTOs.csproj" />
   </ItemGroup>
 
 </Project>

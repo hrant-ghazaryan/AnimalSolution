@@ -1,80 +1,32 @@
-﻿using AuthDTOs;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+﻿using AnimalWpf.ViewModels;
 using System.Windows;
-using AnimalWpf.ViewModels;
 
 namespace AnimalWpf;
 
 public partial class MainWindow : Window
 {
-    private static readonly HttpClient httpClient = new()
-    {
-        BaseAddress = new Uri("https://localhost:7184/")
-    };
-    private readonly RegisterViewModel viewModel;
-
     public MainWindow()
     {
-        viewModel = new RegisterViewModel();
         InitializeComponent();
-        DataContext = viewModel;
     }
 
-    private async void RegisterButton_Click(object sender, RoutedEventArgs e)
+    private void AddAnimal_Click(object sender, RoutedEventArgs e)
     {
-        if (viewModel.RegisterDto.Password != viewModel.ConfirmPassword)
-        {
-            viewModel.Message = "Passwords do not match.";
-            return;
-        }
-
-        var json = JsonSerializer.Serialize(
-            viewModel.RegisterDto,
-            new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-
-        var content = new StringContent(
-            json,
-            Encoding.UTF8,
-            "application/json");
-
-        try
-        {
-            var response = await httpClient.PostAsync(
-                "api/auth/register",
-                content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                viewModel.Message = "Registration successful.";
-                return;
-            }
-
-            var errorJson = await response.Content.ReadAsStringAsync();
-
-            viewModel.Message = $"Registration failed: {errorJson}";
-        }
-        catch (HttpRequestException)
-        {
-            viewModel.Message = "Could not connect to Auth API.";
-        }
+        new AnimalCreateWindow().Show();
     }
 
-    private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        => viewModel.RegisterDto.Password = PasswordBox.Password;
-
-    private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        => viewModel.ConfirmPassword = ConfirmPasswordBox.Password;
-
-    private void OpenLoginWindowButton_Click(object sender, RoutedEventArgs e)
+    private void Login_Click(object sender, RoutedEventArgs e)
     {
-        var loginWindow = new LoginWindow();
+        new LoginWindow().Show();
+    }
 
-        loginWindow.Show();
-        Close();
+    private void Register_Click(object sender, RoutedEventArgs e)
+    {
+        new RegisterWindow().Show();
+    }
+
+    private void UserProfile_Click(object sender, RoutedEventArgs e)
+    {
+        new UserMainWindow().Show();
     }
 }

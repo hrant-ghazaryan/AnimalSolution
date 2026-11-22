@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AnimalDTOs;
+using Microsoft.AspNetCore.Mvc;
 using TranslationDTOs;
 using TranslationServices;
 
@@ -26,6 +27,18 @@ public class TranslationsController : ControllerBase
         var result = await translationService.GetEnumTranslationsAsync(
             enumType, languageCode);
 
+        return Ok(result);
+    }
+
+    [HttpPost("translateanimals")]
+    public async Task<ActionResult<List<AnimalResponseDTO>>> TranslateAnimalsListDtos(
+        [FromBody]List<AnimalResponseDTO> animals,
+        [FromQuery] string languageCode)
+    {
+        if (string.IsNullOrWhiteSpace(languageCode))
+            return BadRequest("Language code is required.");
+
+        var result = await translationService.TranslateAnimalsListDtos(animals, languageCode);
         return Ok(result);
     }
 

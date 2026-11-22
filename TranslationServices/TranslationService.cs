@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AnimalDTOs;
+using AnimalModels.Entitites;
+using Microsoft.EntityFrameworkCore;
 using TranslationDTOs;
 using TranslationModels.Data;
 using TranslationModels.Entitites;
@@ -74,5 +76,22 @@ public class TranslationService : ITranslationService
 
         context.Translations.Remove(translation);
         await context.SaveChangesAsync();
+    }
+
+    public async Task<List<AnimalResponseDTO>> TranslateAnimalsListDtos(
+        List<AnimalResponseDTO> animals, string languageCode)
+    {
+        var genderTranslation = await GetEnumTranslationsAsync(nameof(AnimalGender), languageCode);
+        var colorTranslation = await GetEnumTranslationsAsync(nameof(Color), languageCode);
+
+        foreach (var animal in animals)
+        {
+            if (colorTranslation is not null && colorTranslation.TranslatedWords.TryGetValue(animal.Color, out var translatedColor))
+                animal.Color = translatedColor;
+
+            if (genderTranslation is not null && genderTranslation.TranslatedWords.TryGetValue(animal.Gender, out var translatedGender))
+                animal.Gender = translatedGender;
+        }
+        return animals;
     }
 }

@@ -1,0 +1,24 @@
+﻿<Window x:Class="AnimalWpf.AnimalsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnimalWpf"
+        mc:Ignorable="d"
+        Title="AnimalsWindow" Height="468" Width="1019"
+        Loaded="Window_Loaded">
+    <Grid Margin="0,353,0,0">
+        <DataGrid ItemsSource="{Binding Animals}" HorizontalAlignment="Left" Height="362" Margin="37,-326,0,0" VerticalAlignment="Top" Width="663">
+        </DataGrid>
+        <TextBox Name="txtSearch" HorizontalAlignment="Left" Height="35" Margin="727,-326,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" RenderTransformOrigin="-0.392,1.601"/>
+        <Button Name="btnSearch" Content="Search" HorizontalAlignment="Left" Height="39" Margin="727,-276,0,0" VerticalAlignment="Top" Width="130" Click="btnSearch_Click"/>
+        <TextBox Name="pageCounttxt" HorizontalAlignment="Left" Height="30" Margin="753,-41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42"/>
+        <TextBox Name="animalsCounttxt" HorizontalAlignment="Left" Height="30" Margin="853,-41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="41"/>
+        <Label Name="lblPage" Content="Page" HorizontalAlignment="Left" Height="30" Margin="714,-41,0,0" VerticalAlignment="Top" Width="40"/>
+        <Label Name="lblCount" Content="Count" HorizontalAlignment="Left" Height="30" Margin="808,-41,0,0" VerticalAlignment="Top" Width="46"/>
+        <Button Name="btnGetPages" Content="Get Pages" HorizontalAlignment="Left" Height="36" Margin="719,0,0,0" VerticalAlignment="Top" Width="175" Click="btnGetPages_Click"/>
+        <Button Name="btnReset" Content="Reset" HorizontalAlignment="Left" Height="39" Margin="896,-276,0,0" VerticalAlignment="Top" Width="95" Click="btnReset_Click"/>
+        <Label Name="lblLanguage" Content="Lng" HorizontalAlignment="Left" Height="36" Margin="912,7,0,0" VerticalAlignment="Top" Width="48"/>
+        <ComboBox Name="cmbLanguage" SelectionChanged="LanguageSelected" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="36" Margin="944,0,0,0" VerticalAlignment="Top" Width="47"/>
+    </Grid>
+</Window>

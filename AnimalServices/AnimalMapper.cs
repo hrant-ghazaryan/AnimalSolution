@@ -1,27 +1,27 @@
 ﻿using AnimalModels.Entitites;
 using AnimalDTOs;
+using AnimalExceptions;
 
 namespace AnimalServices;
 
 public static class AnimalMapper
 {
-    public static AnimalCreateDTO MapToDTO(Animal animal)
-        => new AnimalCreateDTO
+    public static AnimalResponseDTO MapToDTO(Animal animal)
+        => new AnimalResponseDTO
         {
             Name = animal.Name,
             Age = animal.Age,
             Weight = animal.Weight,
-            OwnedBy = animal.OwnedBy,
-            Color = animal.Color,
-            Gender = animal.Gender,
-            RowVersion = animal.RowVersion
+            Color = animal.Color.ToString(),
+            Gender = animal.Gender.ToString(),
+            OwnedBy = animal.OwnedBy
         };
-    public static IEnumerable<AnimalCreateDTO> MapToDTOs(IEnumerable<Animal> animals)
+    public static IEnumerable<AnimalResponseDTO> MapToDTOs(IEnumerable<Animal> animals)
     {
         if (animals.Count() == 0)
             return [];
 
-        List<AnimalCreateDTO> animalDTOs = new();
+        List<AnimalResponseDTO> animalDTOs = new();
         foreach (var animal in animals)
         {
             var animalDTO = MapToDTO(animal);
@@ -30,18 +30,26 @@ public static class AnimalMapper
 
         return animalDTOs;
     }
-    public static Animal MapToEntity(AnimalCreateDTO animal)
-        => new Animal
+    public static Animal MapToEntity(AnimalResponseDTO animal)
+    {
+        var animalColor = Enum.TryParse(animal.Color, out Color color);
+        var animalGender = Enum.TryParse(animal.Gender, out AnimalGender gender);
+
+        if (!animalColor || !animalGender)
+            throw new AnimalInvalidData("Invalid Color or Gender value");
+
+        return new Animal
         {
             Name = animal.Name,
             Age = animal.Age,
             Weight = animal.Weight,
+            Color = color,
+            Gender = gender,
             OwnedBy = animal.OwnedBy,
-            Color = animal.Color,
-            Gender = animal.Gender,
             CreatedAt = DateTime.UtcNow
         };
-    public static IEnumerable<Animal> MapToEntities(IEnumerable<AnimalCreateDTO> animalDTOs)
+    }
+    public static IEnumerable<Animal> MapToEntities(IEnumerable<AnimalResponseDTO> animalDTOs)
     {
         if (animalDTOs.Count() == 0)
             return [];

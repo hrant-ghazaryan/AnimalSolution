@@ -2,6 +2,7 @@
 using AnimalServices.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using AnimalDTOs;
+using AnimalApi.TranslationClient;
 
 namespace AnimalApi.Controllers;
 
@@ -66,7 +67,8 @@ public class AnimalsController : ControllerBase
 
     [HttpGet("pages")]
     public async Task<ActionResult<IEnumerable<AnimalCreateDTO>>> GetAnimalByPageAndCount(
-        [FromQuery] int page, [FromQuery] int count)
+        [FromQuery] int page, 
+        [FromQuery] int count)
     {
         var animals = await animalService.GetAnimalByPageAndCount(page, count);
 
@@ -74,16 +76,18 @@ public class AnimalsController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<AnimalCreateDTO>>> SearchBy(
-        [FromQuery] string word)
+    public async Task<ActionResult<IEnumerable<AnimalResponseDTO>>> SearchBy(
+        [FromQuery] string word, [FromQuery] string languageCode)
     {
         var animals = await animalService.SearchBy(word);
-
+        
+        animals = await translationApiClient.TranslateAnimalsListDtos(
+            animals.ToList(), languageCode);
         return Ok(animals);
     }
 
     [HttpGet]
-    public async Task<ActionResult<AnimalListResponseDTO>> GetAll(
+    public async Task<ActionResult<List<AnimalResponseDTO>>> GetAll(
         [FromHeader(Name = "Accept-Language")] string? acceptLanguage)
     {
         var languageCode = GetLanguageCode(acceptLanguage);
@@ -123,11 +127,7 @@ public class AnimalsController : ControllerBase
             };
         }).ToList();
 
-        return Ok(new AnimalListResponseDTO
-        {
-            Count = result.Count(),
-            Animals = result
-        });
+        return Ok(result);
     }
 
     private string GetLanguageCode(string? acceptLanguage)

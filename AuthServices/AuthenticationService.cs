@@ -62,7 +62,7 @@ public class AuthenticationService : IAuthenticationService
             .SingleOrDefaultAsync(u => u.Email == email);
 
         if (user is null)
-            throw new Exception("Invalid email or password.");
+            throw new LoginFailedException();
 
         var passwordResult = passwordHasher.VerifyHashedPassword(
             user,
@@ -70,7 +70,7 @@ public class AuthenticationService : IAuthenticationService
             request.Password);
 
         if (passwordResult == PasswordVerificationResult.Failed)
-            throw new Exception("Wrong password.");
+            throw new LoginFailedException();
 
         return CreateToken(user);
     }
@@ -119,5 +119,15 @@ public class AuthenticationService : IAuthenticationService
 
             ExpiresAt = expiresAt
         };
+    }
+
+    public async Task<IEnumerable<UserGetDto>> GetAllUsers()
+    {
+        var users = await context.Users.Select(u => new UserGetDto
+            {
+                UserName = u.UserName,
+                Email = u.Email
+            }).ToListAsync();
+        return users;
     }
 }

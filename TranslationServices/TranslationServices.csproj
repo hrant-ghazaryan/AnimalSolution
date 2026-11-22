@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnimalDTOs\AnimalDTOs.csproj" />
     <ProjectReference Include="..\TranslationDTOs\TranslationDTOs.csproj" />
     <ProjectReference Include="..\TranslationModels\TranslationModels.csproj" />
   </ItemGroup>

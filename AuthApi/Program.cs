@@ -1,4 +1,4 @@
-using AnimalApi;
+using AnimalApi.Middlewares;
 using AuthModels.Data;
 using AuthModels.Entities;
 using AuthServices;

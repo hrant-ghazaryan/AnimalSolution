@@ -33,4 +33,11 @@ public class AuthController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("users")]
+    public async Task<ActionResult<IEnumerable<UserGetDto>>> GetUsers()
+    {
+        var users = await authenticationService.GetAllUsers();
+        return Ok(users);
+    }
 }

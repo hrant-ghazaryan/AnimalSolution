@@ -1,6 +1,7 @@
 ﻿using AnimalDTOs;
 using AnimalExceptions;
 using AnimalModels.Data;
+using AnimalModels.Entitites;
 using AnimalServices.Intefaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +18,22 @@ public class AnimalService : IAnimalService
         if (animalDTO.Weight <= 0 || animalDTO.Age <= 0)
             throw new AnimalInvalidData("Invalid Animal Input Data");
 
-        var animal = AnimalMapper.MapToEntity(animalDTO);
+        var animal = new Animal
+        {
+            Name = animalDTO.Name,
+            Age = animalDTO.Age,
+            Weight = animalDTO.Weight,
+            Color = animalDTO.Color,
+            Gender = animalDTO.Gender,
+            OwnedBy = animalDTO.OwnedBy,
+            CreatedAt = DateTime.UtcNow
+        };
 
         await context.Animals.AddAsync(animal);
         await context.SaveChangesAsync();
     }
 
-    public async Task<AnimalCreateDTO> Get(int id)
+    public async Task<AnimalResponseDTO> Get(int id)
     {
         var animal = await context.Animals
             .SingleOrDefaultAsync(item => item.Id == id);
@@ -34,7 +44,7 @@ public class AnimalService : IAnimalService
         return AnimalMapper.MapToDTO(animal);
     }
 
-    public async Task<IEnumerable<AnimalCreateDTO>> GetAll()
+    public async Task<IEnumerable<AnimalResponseDTO>> GetAll()
     {
         var animals = await context.Animals
             .AsNoTracking()
@@ -106,7 +116,7 @@ public class AnimalService : IAnimalService
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<AnimalCreateDTO>> GetAnimalByPageAndCount(int page, int count)
+    public async Task<IEnumerable<AnimalResponseDTO>> GetAnimalByPageAndCount(int page, int count)
     {
         if (page < 1 || count < 1)
             return [];
@@ -120,7 +130,7 @@ public class AnimalService : IAnimalService
         return AnimalMapper.MapToDTOs(animals);
     }
 
-    public async Task<IEnumerable<AnimalCreateDTO>> SearchBy(string word)
+    public async Task<IEnumerable<AnimalResponseDTO>> SearchBy(string word)
     {
         if (string.IsNullOrEmpty(word))
             return [];

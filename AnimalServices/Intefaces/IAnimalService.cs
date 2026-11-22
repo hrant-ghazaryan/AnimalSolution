@@ -6,9 +6,9 @@ public interface IAnimalService
 {
     Task Add(AnimalCreateDTO animal);
 
-    Task<AnimalCreateDTO> Get(int id);
+    Task<AnimalResponseDTO> Get(int id);
 
-    Task<IEnumerable<AnimalCreateDTO>> GetAll();
+    Task<IEnumerable<AnimalResponseDTO>> GetAll();
 
     Task Update(int id, AnimalCreateDTO animal);
 
@@ -16,7 +16,7 @@ public interface IAnimalService
 
     Task Close(int id);
 
-    Task<IEnumerable<AnimalCreateDTO>> GetAnimalByPageAndCount(int page, int count);
+    Task<IEnumerable<AnimalResponseDTO>> GetAnimalByPageAndCount(int page, int count);
 
-    Task<IEnumerable<AnimalCreateDTO>> SearchBy(string word);
+    Task<IEnumerable<AnimalResponseDTO>> SearchBy(string word);
 }

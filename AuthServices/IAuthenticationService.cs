@@ -7,4 +7,5 @@ public interface IAuthenticationService
     Task RegisterAsync(RegisterRequestDto request);
 
     Task<AuthResponseDto?> LoginAsync(LoginRequestDto request);
+    Task<IEnumerable<UserGetDto>> GetAllUsers();
 }

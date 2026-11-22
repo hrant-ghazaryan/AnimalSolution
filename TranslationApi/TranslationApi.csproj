@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AnimalApi\AnimalApi.csproj" />
     <ProjectReference Include="..\TranslationModels\TranslationModels.csproj" />
     <ProjectReference Include="..\TranslationServices\TranslationServices.csproj" />
   </ItemGroup>

@@ -1,3 +1,4 @@
+using AnimalApi.TranslationClient;
 using AnimalModels.Entitites;
 using Microsoft.AspNetCore.Mvc;
 using TranslationDTOs;

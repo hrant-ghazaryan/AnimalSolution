@@ -12,7 +12,7 @@ public partial class LoginWindow : Window
     public static AuthResponseDto? LoginedUser { get; set; }
     private static readonly HttpClient httpClient = new()
     {
-        BaseAddress = new Uri("https://localhost:7184/")
+        BaseAddress = new Uri("https://localhost:7007/")
     };
 
     public LoginWindow()

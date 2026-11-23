@@ -10,7 +10,7 @@ public partial class UsersWindow : Window
 {
     private static readonly HttpClient authApiHttpClient = new()
     {
-        BaseAddress = new Uri("https://localhost:7184/")
+        BaseAddress = new Uri("https://localhost:7007/")
     };
 
     public ObservableCollection<UserGetDto> UserListItems { get; } = [];

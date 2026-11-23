@@ -48,7 +48,7 @@
                VerticalAlignment="Top"
                Margin="70,186,0,0" />
 
-        <PasswordBox x:Name="PasswordBox"
+        <PasswordBox x:Name="PasswordBoxx"
                      Width="300"
                      Height="30"
                      HorizontalAlignment="Center"

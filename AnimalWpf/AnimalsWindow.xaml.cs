@@ -14,12 +14,12 @@ public partial class AnimalsWindow : Window
     private static string? selectedLanguage;
     private readonly HttpClient animalClient = new HttpClient
     {
-        BaseAddress = new Uri("https://localhost:7150/")
+        BaseAddress = new Uri("https://localhost:7007/")
     };
 
     public readonly HttpClient translationClient = new HttpClient
     {
-        BaseAddress = new Uri("https://localhost:7274/")
+        BaseAddress = new Uri("https://localhost:7007/")
     };
 
     public ObservableCollection<AnimalResponseDTO> Animals { get; } = [];

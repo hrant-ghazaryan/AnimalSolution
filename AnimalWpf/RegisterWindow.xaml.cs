@@ -1,22 +1,18 @@
 ﻿using AnimalWpf.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AnimalWpf;
 
 public partial class RegisterWindow : Window
 {
+    private static readonly Regex PasswordRegex = new Regex(@"^.{0,8}$");
+
     public RegisterWindow()
     {
         viewModel = new RegisterViewModel();
@@ -25,7 +21,7 @@ public partial class RegisterWindow : Window
     }
     private static readonly HttpClient httpClient = new()
     {
-        BaseAddress = new Uri("https://localhost:7184/")
+        BaseAddress = new Uri("https://localhost:7007/")
     };
     private readonly RegisterViewModel viewModel;
 
@@ -72,16 +68,39 @@ public partial class RegisterWindow : Window
     }
 
     private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        => viewModel.RegisterDto.Password = PasswordBox.Password;
+    {
+        PasswordRegexing(PasswordBoxx);
+
+        viewModel.RegisterDto.Password = PasswordBoxx.Password;
+    }
 
     private void ConfirmPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        => viewModel.ConfirmPassword = ConfirmPasswordBox.Password;
+    {
+        PasswordRegexing(ConfirmPasswordBox);
 
+        viewModel.ConfirmPassword = ConfirmPasswordBox.Password;
+    }
     private void OpenLoginWindowButton_Click(object sender, RoutedEventArgs e)
     {
         var loginWindow = new LoginWindow();
 
         loginWindow.Show();
         Close();
+    }
+
+    private void PasswordRegexing(PasswordBox passworBox)
+    {
+        bool isValid = PasswordRegex.IsMatch(passworBox.Password);
+
+        if (isValid)
+        {
+            passworBox.ClearValue(Control.BackgroundProperty);
+            passworBox.ClearValue(Control.BorderBrushProperty);
+        }
+        else
+        {
+            passworBox.Background = new SolidColorBrush(Color.FromRgb(255, 224, 224));
+            passworBox.BorderBrush = Brushes.Red;
+        }
     }
 }

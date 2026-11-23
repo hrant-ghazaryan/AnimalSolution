@@ -16,7 +16,7 @@ public partial class AnimalCreateWindow : Window
     private string defaultLanguage = "en";
     HttpClient animalClient = new()
     {
-        BaseAddress = new Uri("https://localhost:7150/")
+        BaseAddress = new Uri("https://localhost:7007/")
     };
 
     public AnimalCreateWindow()

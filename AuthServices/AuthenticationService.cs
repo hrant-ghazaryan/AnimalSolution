@@ -40,6 +40,9 @@ public class AuthenticationService : IAuthenticationService
         if (alreadyExists)
             throw new UserExistsException();
 
+        if (request.Password.Length > 8)
+            throw new Exception("User`s password can`t be longer than 8");
+
         var user = new ApplicationUser
         {
             UserName = userName,

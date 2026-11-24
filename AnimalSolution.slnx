@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="AdminApi/AdminApi.csproj" Id="2fb44a4c-1264-472e-9d89-8e8d8787e706" />
+  <Project Path="AniamlAPI.UnitTests/AniamlAPI.UnitTests.csproj" Id="01327613-2839-419d-882f-deb56a6b8f2a" />
+  <Project Path="AnimalAPI.IntegrationTests/AnimalAPI.IntegrationTests.csproj" Id="28e13129-8f01-4f16-864d-afbcb3245f7c" />
   <Project Path="AnimalApi/AnimalApi.csproj" Id="552777d9-0d5c-4ec4-8936-7a373960b4da" />
   <Project Path="AnimalDTOs/AnimalDTOs.csproj" Id="4117f8f6-ee2b-47d5-a498-bb1ddec2edbd" />
   <Project Path="AnimalExceptions/AnimalExceptions.csproj" Id="126279db-2279-449c-ad26-6e2b0eaf4917" />

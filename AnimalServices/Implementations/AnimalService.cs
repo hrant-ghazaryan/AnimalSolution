@@ -15,8 +15,7 @@ public class AnimalService : IAnimalService
 
     public async Task Add(AnimalCreateDTO animalDTO)
     {
-        if (animalDTO.Weight <= 0 || animalDTO.Age <= 0)
-            throw new AnimalInvalidData("Invalid Animal Input Data");
+        ValidateAnimal(animalDTO);
 
         var animal = new Animal
         {
@@ -143,5 +142,13 @@ public class AnimalService : IAnimalService
             .ToListAsync();
 
         return AnimalMapper.MapToDTOs(animals);
+    }
+
+    public static void ValidateAnimal(AnimalCreateDTO? animalDTO)
+    {
+        ArgumentNullException.ThrowIfNull(animalDTO);
+        ArgumentException.ThrowIfNullOrWhiteSpace(animalDTO.Name);
+        if (animalDTO.Weight <= 0 || animalDTO.Age < 0)
+            throw new AnimalInvalidData("Invalid Animal Input Data");
     }
 }
